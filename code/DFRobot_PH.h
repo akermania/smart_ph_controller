@@ -65,7 +65,7 @@ private:
     float  _voltage;
     float  _temperature;
     float  _targetPh;
-    bool   _isF;
+    float   _isF;
     float  _flowRate;
     int    _pumpSpeed;
     float  _pumpAmount;
