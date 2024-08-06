@@ -87,7 +87,7 @@ float pump_amount = 1.0;
 float pump_wait = 60.0;
 float target_ph = 6.3;
 float phBuff = 0.1;
-int isF = 0; 
+float isF = 0.0; 
 bool first_run = true;
 bool isDosing = false;
 
@@ -125,8 +125,6 @@ void setup()
     pump_amount = readFloatFromEEPROM(16);
     pump_wait = readFloatFromEEPROM(20);
     phBuff = readFloatFromEEPROM(40);
-    
-    
 }
 
 void loop()
@@ -260,10 +258,10 @@ void loop()
 
       if( pressDuration < SHORT_PRESS_TIME ) {
           if(cmdType == 0){
-            if(isF == 1) {
-              isF=0;
+            if(isF == 1.0) {
+              isF=0.0;
             } else {
-              isF=1;
+              isF=1.0;
             }
             strcpy(cmd, "tt");
             ph.calibration(voltage,temperature,cmd);
@@ -467,7 +465,7 @@ float readTemperature()
   // Serial.print(" - Fahrenheit temperature: ");
   // Serial.println(sensors.getTempFByIndex(0));
   // delay(1000);
-  if(isF == 1) {
+  if(isF == 1.0) {
     return sensors.getTempFByIndex(0);
   } else {
     return sensors.getTempCByIndex(0);
