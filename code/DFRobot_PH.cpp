@@ -85,7 +85,7 @@ DFRobot_PH::DFRobot_PH()
     this->_neutralVoltage = 1500.0;     //buffer solution 7.0 at 25C
     this->_voltage        = 1500.0;
     this->_targetPh       = 6.3;
-    this->_isF            = 0;
+    this->_isF            = 0.0;
     this->_flowRate       = 0.6;
     this->_pumpSpeed      = 160;
     this->_pumpAmount     = 1.0;
@@ -142,7 +142,7 @@ void DFRobot_PH::begin()
     ////Serial.print("_acidVoltage:");
     ////Serial.println(this->_acidVoltage);
     if(EEPROM.read(PHVALUEADDR+12)==0xFF  || isnan(this->_isF)){
-        this->_isF = 0;  // new EEPROM, write typical voltage
+        this->_isF = 0.0;  // new EEPROM, write typical voltage
         EEPROM_write(PHVALUEADDR+12, this->_isF);
     }
 
@@ -204,7 +204,7 @@ float DFRobot_PH::readPH(float voltage, float temperature, bool isDosing)
     float standardTemperature = 25.0;
     float temperatureCoefficient = -0.003;
     float temperatureC = temperature;
-    if(this->_isF == 1){
+    if(this->_isF == 1.0){
       float temperatureC = (temperature - 32) / 1.8;
     }
     this->_phValue = uncompensatedPhValue + (temperatureC - standardTemperature) * temperatureCoefficient;
@@ -216,7 +216,7 @@ float DFRobot_PH::readPH(float voltage, float temperature, bool isDosing)
         display.setCursor(0, 5);
         display.print(F("Temperature: "));
         display.print(temperature,1);
-        if(this->_isF == 1) {
+        if(this->_isF == 1.0) {
             display.print(F(" F"));
         } else {
             display.print(F(" C"));
@@ -618,13 +618,13 @@ void DFRobot_PH::phCalibration(int mode)
                 display.clearDisplay();
                 display.setTextSize(2);
                 display.setCursor(0, 15);
-                if(this->_isF == 0) {
-                    this->_isF = 1;
+                if(this->_isF == 0.0) {
+                    this->_isF = 1.0;
                     EEPROM_write(PHVALUEADDR+12, this->_isF);
                     //Serial.println(F(">>>Set Temp to F"));
                     display.print(F("Fahrenheit"));
                 } else {
-                    this->_isF = 0;
+                    this->_isF = 0.0;
                     EEPROM_write(PHVALUEADDR+12, this->_isF);
                     //Serial.println(F(">>>Set Temp to C"));
                     display.print(F("Celsius"));
